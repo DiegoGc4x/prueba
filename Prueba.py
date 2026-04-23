@@ -8,11 +8,40 @@ Original file is located at
 """
 
 import streamlit as st
+import numpy as np
+import matplotlib.pyplot as plt
 
-st.sidebar.header("Hiperparámetros de Red")
-ecuacion = st.sidebar.text_input("Función de Pérdida:")
-lr = st.sidebar.number_input("Tasa de Aprendizaje:")
-epochs = st.sidebar.slider("Épocas Máximas:", 100, 10000)
-momentum = st.sidebar.slider("Momentum (Inercia):", 0.0, 0.99)
+# --- Configuración de Interfaz ---
+st.title("Simulador de Optimización de Modelos")
+
+# Formulario en la barra lateral
+st.sidebar.header("Configuración de Entrenamiento")
+ecuacion = st.sidebar.text_input("Función de Pérdida:", value="x**2 + y**2")
+lr = st.sidebar.number_input("Tasa de Aprendizaje (Alpha):", value=0.01)
+max_iters = st.sidebar.slider("Iteraciones Máximas:", 100, 5000, value=1000)
+momentum = st.sidebar.slider("Momentum:", 0.0, 0.99, value=0.9)
 
 btn_entrenar = st.sidebar.button("Entrenar Modelo")
+
+# --- Cuerpo Principal (Vista Previa) ---
+st.header("Resultados del Entrenamiento")
+
+if not btn_entrenar:
+    st.info("Vista previa de la interfaz de resultados:")
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Peso W1", "0.0000")
+    col2.metric("Peso W2", "0.0000")
+    col3.metric("Error (Loss)", "0.0000")
+    
+    # Gráficas de ejemplo con datos aleatorios
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+    
+    # Simulación de superficie de error
+    ax1.set_title("Boceto: Superficie de Error")
+    ax1.contour(np.random.rand(10,10))
+    
+    # Simulación de caída de error
+    ax2.set_title("Boceto: Curva de Convergencia")
+    ax2.plot(np.exp(-np.linspace(0, 5, 100)), color='purple')
+    
+    st.pyplot(fig)
